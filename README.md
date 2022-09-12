@@ -1,5 +1,11 @@
 # VaultFactory
-A new protocol to handle payments and distribution for Web3 / DApps.
+An all new i-Fi || My-Fi || We-Fi protocol to handle payments and distribution for groups, teams, and individuals.
+
+## Made with <3
+Perfect for Web3 / DApps.
+
+## Requirements
+Solidity 0.8.13
 
 ## Problem
 No known standard or protocol simply handles the payments and distribution properly for DApps.
