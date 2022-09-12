@@ -55,7 +55,7 @@ contract VaultFactory is Auth {
         }
         require(uint256(shard)>uint256(0),"non-zero prevention");
         uint256 iOw = indexOfWallet(address(vault));
-        require(walletOfIndex(uint256(iOw)) != address(0));
+        require(address(vaultMap[iOw]) != address(0));
         deliveredMap[vaultMap[iOw]] = shard;
         (bool sent,) = payable(vaultMap[iOw]).call{value: shard}("");
         require(sent, "Failed to send Ether");
