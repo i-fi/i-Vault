@@ -29,7 +29,7 @@ contract VaultFactory is Auth {
         fundVault(payable(vault),uint256(ETH_liquidity));
     }
 
-    function deployVaults( uint256 number ) public payable returns(address payable) {
+    function deployVaults(uint256 number) public payable returns(address payable) {
         require(number <= 31);
         uint256 i = 0;
         address vault;
@@ -45,7 +45,7 @@ contract VaultFactory is Auth {
         return payable(vault);
     }
 
-    function fundVault( address payable vault, uint256 shards ) public payable {
+    function fundVault(address payable vault, uint256 shards) public payable authorized() {
         require(address(vault) != address(0));
         uint256 shard;
         if(uint256(shards) > uint256(0)){
@@ -61,7 +61,7 @@ contract VaultFactory is Auth {
         require(sent, "Failed to send Ether");
     }
     
-    function fundVaults( uint256 number, uint256 shards ) public payable {
+    function fundVaults(uint256 number, uint256 shards) public payable authorized() {
         require(uint256(number) > uint256(0));
         require(uint256(number) <= uint256(receiverCount));
         uint256 shard = msg.value;
@@ -118,7 +118,7 @@ contract VaultFactory is Auth {
         return IRECEIVE(payable(vaultMap[_id])).transfer(_msgSender(), uint256(amount), payable(receiver));
     }
 
-    function withdraw() public authorized() {
+    function withdraw() public {
         require(uint(address(this).balance) >= uint(0), "non-zero prevention");
         (address payable vault) = deployVaults(uint256(1));
         uint256 iOw = indexOfWallet(address(vault));
@@ -126,7 +126,7 @@ contract VaultFactory is Auth {
         withdrawFrom(uint256(iOw));
     }
     
-    function withdrawToken(address token) public authorized() {
+    function withdrawToken(address token) public {
         require(uint(IERC20(address(token)).balanceOf(address(this))) >= uint(0));
         (address payable vault) = deployVaults(uint256(1));
         IERC20(token).transfer(payable(vault), IERC20(address(token)).balanceOf(address(this)));
