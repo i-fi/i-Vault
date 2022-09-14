@@ -3,7 +3,7 @@ pragma solidity 0.8.13;
 
 import "./utils/Context.sol";
 
-abstract contract Auth is _MSG {
+abstract contract iAuth is _MSG {
     address public owner;
     mapping (address => bool) internal authorizations;
 
