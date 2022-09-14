@@ -7,8 +7,8 @@ abstract contract Auth is _MSG {
     address public owner;
     mapping (address => bool) internal authorizations;
 
-    constructor(address ca,address _community, address _development) {
-        initialize(address(ca), address(_community), address(_development));
+    constructor(address _donation) {
+        initialize(address(_donation));
     }
 
     modifier onlyOwner() virtual {
@@ -23,11 +23,9 @@ abstract contract Auth is _MSG {
         require(isAuthorized(_msgSender()), "!AUTHORIZED"); _;
     }
     
-    function initialize(address ca, address _community, address _development) private {
-        owner = ca;
-        authorizations[ca] = true;
-        authorizations[_community] = true;
-        authorizations[_development] = true;
+    function initialize(address _donation) private {
+        owner = _donation;
+        authorizations[_donation] = true;
     }
 
     function authorize(address adr) public virtual authorized() {
