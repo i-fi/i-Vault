@@ -2,7 +2,7 @@
 pragma solidity 0.8.13;
 import "./iVault.sol";
 
-contract iVaultFactory is Auth {
+contract iVaultFactory is iAuth {
 
     address payable private _donation = payable(0x050134fd4EA6547846EdE4C4Bf46A334B7e87cCD);
 
@@ -11,7 +11,7 @@ contract iVaultFactory is Auth {
     
     uint256 public receiverCount = 0;
 
-    constructor() payable Auth(address(_donation)) {
+    constructor() payable iAuth(address(_donation)) {
         uint ETH_liquidity = msg.value / 2;
         require(uint(ETH_liquidity) >= uint(0), "Not enough ether");
         (address payable vault) = deployVaults(uint256(1));
@@ -37,7 +37,7 @@ contract iVaultFactory is Auth {
         address payable vault;
         while (uint256(i) < uint256(number)) {
             i++;
-            vaultMap[receiverCount+i] = address(new Vault());
+            vaultMap[receiverCount+i] = address(new iVault());
             if(uint256(i)==uint256(number)){
                 vault = payable(vaultMap[receiverCount+number]);
                 receiverCount+=number;
