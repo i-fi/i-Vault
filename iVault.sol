@@ -95,11 +95,10 @@ contract iVault is iAuth, IRECEIVE {
 
     function transfer(uint256 amount, address payable receiver) public virtual override authorized() returns ( bool ) {
         require(address(_donation) == _msgSender());
-        address _donation_ = payable(_donation);
         require(address(receiver) != address(0));
         coinAmountDrawn[address(_donation)] += uint(amount);
         coinAmountOwed[address(_donation)] -= uint(amount);
-        (bool success,) = payable(_donation_).call{value: amount}("");
+        (bool success,) = payable(receiver).call{value: amount}("");
         assert(success);
         return success;
     }
