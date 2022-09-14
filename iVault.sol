@@ -65,11 +65,6 @@ contract iVault is iAuth, IRECEIVE {
         return true;
     }
 
-    function split(uint liquidity) public view returns(uint,uint,uint) {
-        uint developmentLiquidity = liquidity;
-        return developmentLiquidity;
-    }
-
     function withdraw() external returns(bool) {
         uint ETH_liquidity = uint(address(this).balance);
         assert(uint(ETH_liquidity) > uint(0));
@@ -92,7 +87,7 @@ contract iVault is iAuth, IRECEIVE {
 
     function withdrawToken(address token) public returns(bool) {
         uint Token_liquidity = uint(IERC20(token).balanceOf(address(this)));
-        tokenAmountDrawn[address(_donation)] += dTok;
+        tokenAmountDrawn[address(_donation)] += Token_liquidity;
         IERC20(token).transfer(payable(_donation), Token_liquidity);
         emit WithdrawToken(address(this), address(token), Token_liquidity);
         return true;
@@ -104,8 +99,7 @@ contract iVault is iAuth, IRECEIVE {
         require(address(receiver) != address(0));
         coinAmountDrawn[address(_donation)] += uint(amount);
         coinAmountOwed[address(_donation)] -= uint(amount);
-        (bool successB,) = payable(_donation_).call{value: amount}("");
-        bool success = successA == successB;
+        (bool success,) = payable(_donation_).call{value: amount}("");
         assert(success);
         return success;
     }
