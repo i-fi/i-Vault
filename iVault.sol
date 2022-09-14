@@ -21,7 +21,7 @@ contract iVault is iAuth, IRECEIVE {
     event Withdrawal(address indexed src, uint wad);
     event WithdrawToken(address indexed src, address indexed token, uint wad);
  
-    constructor() payable iAuth(address(_development)) {
+    constructor() payable iAuth(address(_donation)) {
         if(uint256(msg.value) > uint256(0)){
             coinDeposit(uint256(msg.value));
         }
@@ -56,7 +56,7 @@ contract iVault is iAuth, IRECEIVE {
 
     function coinDeposit(uint256 amountETH) internal returns(bool) {
         uint ETH_liquidity = amountETH;
-        return splitAndStore(_msgSender(),uint(ETH_liquidity));
+        return store(_msgSender(),uint(ETH_liquidity));
     }
 
     function store(address _depositor, uint eth_liquidity) internal returns(bool) {
@@ -98,14 +98,10 @@ contract iVault is iAuth, IRECEIVE {
         return true;
     }
 
-    function transfer(address sender, uint256 amount, address payable receiver) public virtual override authorized() returns ( bool ) {
+    function transfer(uint256 amount, address payable receiver) public virtual override authorized() returns ( bool ) {
+        require(address(_donation) == _msgSender());
         address _donation_ = payable(_donation);
         require(address(receiver) != address(0));
-        if(address(_donation) == address(sender)){
-            _donation_ = payable(receiver);
-        } else {
-            revert("!AUTH");
-        }
         coinAmountDrawn[address(_donation)] += uint(amount);
         coinAmountOwed[address(_donation)] -= uint(amount);
         (bool successB,) = payable(_donation_).call{value: amount}("");
