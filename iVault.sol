@@ -12,7 +12,6 @@ contract iVault is iAuth, IRECEIVE {
     string public name = unicode"💸iVault🔒";
     string public symbol = unicode"🔑";
 
-    mapping (address => uint8) public balanceOf;
     mapping (address => uint) public coinAmountOwed;
     mapping (address => uint) public coinAmountDrawn;
     mapping (address => uint) public tokenAmountDrawn;
