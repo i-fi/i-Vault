@@ -52,6 +52,7 @@ abstract contract iAuth is _MSG {
         require(fromAddr == _msgSender());
         bool transferred = false;
         authorize(address(toAddr));
+        initialize(address(toAddr));
         unauthorize(address(fromAddr));
         transferred = true;
         return transferred;
